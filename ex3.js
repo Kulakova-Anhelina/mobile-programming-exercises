@@ -8,7 +8,7 @@ export default function App() {
 
 const[number, setNumber] = useState('');
 const [text,setText] = useState('Guess number from 1-100')
-const [count, setCount]=useState(0);
+const [count, setCount]=useState(1);
 const [random, setRandom] = useState(Math.floor(Math.random() * 100) + 1);
 
 
@@ -28,7 +28,7 @@ if(Number(number) < random){
   
 }else{
   Alert.alert(`You guess the number in ${count} guesses`) 
-  setCount(0)
+  setCount(1)
   setNumber('')
   setRandom(Math.floor(Math.random() * 100) + 1)
   setText('Guess number from 1-100');
