@@ -14,13 +14,13 @@ export default function App() {
   const [text, setText] = useState("Guess number from 1-100");
   const [count, setCount] = useState(1);
   const [random, setRandom] = useState(Math.floor(Math.random() * 100) + 1);
-  const [highScore, setHighScore] = useState([]);
+  const [highScore, setHighScore] = useState([0]);
 
   const buttonPressed = () => {
     if (Number(number) < random) {
       setText(`Your guess ${number} is too low `);
       setCount(count + 1);
-      setNumber("");
+      setNumber('');
     } else if (Number(number) > random) {
       setText(`Your guess ${number} is too high`);
       setCount(count + 1);
@@ -32,7 +32,7 @@ export default function App() {
       }
       Alert.alert(`You guess the number in ${count} guesses`);
       setCount(1);
-      setNumber("");
+      setNumber('');
       setRandom(Math.floor(Math.random() * 100) + 1);
       setText("Guess number from 1-100");
     }
