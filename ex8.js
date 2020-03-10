@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -7,45 +7,58 @@ import {
   Button,
   TextInput,
   Image,
-  Picker
+  Picker,
+  TouchableOpacity
 } from "react-native";
-import { useEffect } from "react";
 
 export default function App() {
   const [amount, setAmount] = useState("");
-  const [fixer, setFixer] = useState([]);
-  const [rate, setRate] = useState([]);
-  const [chosenCurrency, setChosenCurrency] = useState("");
-  const [result, setResult] = useState(0);
+  const [result, setResult] = useState([]);
+  const [currencyChoice, setCurrencyChoice] = useState({
+    value: "",
+    index: ""
+  });
+  const [monetaryList, setMonetaryList] = useState([]);
+  const url = `http://data.fixer.io/api/latest?access_key=8307081fd4ddc59c59c41735025c1e76`;
 
-  useEffect(() => {
-    const url =
-      "http://data.fixer.io/api/latest?access_key=4a5e06d3a97a737f4aa4acba36c9f468";
+  const getUrlRates = () => {
     fetch(url)
       .then(response => response.json())
       .then(responseJson => {
-        setFixer(responseJson);
-        setRate(Object.keys(responseJson.rates));
+        setMonetaryList(Object.keys(responseJson.rates));
       })
       .catch(error => {
         Alert.alert("Error", error);
       });
+  };
+
+  useEffect(() => {
+    getUrlRates();
   }, []);
 
   const convert = () => {
-    let indexRate = 0;
-    for (let i = 0; rate.length > i; i++) {
-      if (chosenCurrency === rate[i]) {
-        indexRate = i;
-        setResult(ammount * rate[indexRate]);
-        console.log(result);
-      }
-    }
+    fetch(url)
+      .then(response => response.json())
+      .then(responseJson => {
+        setResult(
+          (
+            parseFloat(amount) /
+            parseFloat(
+              parseFloat(
+                responseJson.rates[monetaryList[Number(currencyChoice.index)]]
+              )
+            )
+          ).toFixed(2)
+        );
+      })
+      .catch(error => {
+        Alert.alert("Error", error);
+      });
   };
 
   return (
     <View style={styles.container}>
-      <Text>{result}</Text>
+      <Text>{result}€</Text>
       <Image
         style={{ width: 200, height: 100 }}
         source={{
@@ -54,25 +67,29 @@ export default function App() {
         }}
       />
       <TextInput
-        style={{ fontSize: 18 }}
+        style={styles.input}
         value={amount}
         keyboardType="numeric"
         placeholder="enter ammount"
         onChangeText={amount => setAmount(amount)}
       />
-
-      <Picker
-        selectedValue={chosenCurrency}
-        style={{ height: 50, width: 100 }}
-        onValueChange={itemValue => () => setChosenCurrency(itemValue)}
-      >
-        {rate.map((item, index) => (
-          <Picker.Item key={index} label={`${item}`} value={`${item}`} />
-        ))}
-      </Picker>
-
+      <TouchableOpacity activeOpacity={3}>
+        <Picker
+          selectedValue={currencyChoice.value}
+          style={{ height: 50, width: 100 }}
+          onValueChange={(itemName, itemIndex) =>
+            setCurrencyChoice({ value: itemName, index: itemIndex })
+          }
+        >
+          {monetaryList.map((itemName, index) => {
+            return (
+              <Picker.Item key={index} label={itemName} value={itemName} />
+            );
+          })}
+        </Picker>
+      </TouchableOpacity>
       <View style={styles.buttonContainer}>
-        <Button title="Find" color="white" onPress={convert} />
+        <Button title="Find" onPress={convert} />
       </View>
     </View>
   );
@@ -91,7 +108,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     margin: 10,
-
     backgroundColor: "purple"
+  },
+  input: {
+    width: 150,
+    height: 50,
+    borderColor: "black",
+    fontSize: 18
   }
 });
