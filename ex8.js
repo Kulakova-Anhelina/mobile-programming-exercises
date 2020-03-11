@@ -40,16 +40,10 @@ export default function App() {
     fetch(url)
       .then(response => response.json())
       .then(responseJson => {
+        const rate = responseJson.rates[monetaryList[Number(currencyChoice.index)]];
         setResult(
-          (
-            parseFloat(amount) /
-            parseFloat(
-              parseFloat(
-                responseJson.rates[monetaryList[Number(currencyChoice.index)]]
-              )
-            )
-          ).toFixed(2)
-        );
+          
+          (amount/rate).toFixed(2));
       })
       .catch(error => {
         Alert.alert("Error", error);
