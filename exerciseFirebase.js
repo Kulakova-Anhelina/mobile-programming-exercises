@@ -5,20 +5,20 @@ import {
   TextInput,
   View,
   Button,
-  FlatList,
+  FlatList
 } from "react-native";
 import * as firebase from "firebase";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAufoaXvmSM85m9-_iDFPivKgXwNE0I0SU",
-  authDomain: "shopingapp1211.firebaseapp.com",
-  databaseURL: "https://shopingapp1211.firebaseio.com",
-  projectId: "shopingapp1211",
-  storageBucket: "shopingapp1211.appspot.com",
-  messagingSenderId: "1080936081371",
-  appId: "1:1080936081371:web:4458fa0b644d57273de9fe"
-};
 // Initialize Firebase
+const firebaseConfig = {
+  apiKey: ""
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
 firebase.initializeApp(firebaseConfig);
 export default function App() {
   const [amount, setAmount] = useState("");
