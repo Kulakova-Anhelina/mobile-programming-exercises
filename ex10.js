@@ -9,7 +9,7 @@ export default function App() {
   });
 
   const [location, setLocation] = useState("");
-  const appiKey = "AIzaSyAMpPEnw1dpxC6kMv14xkLnaZatRH_9seY";
+  const appiKey = "appi";
   const [data, setData] = useState([]);
 
 const getUrl = (lat, long) =>{
